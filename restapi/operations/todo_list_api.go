@@ -45,6 +45,9 @@ func NewTodoListAPI(spec *loads.Document) *TodoListAPI {
 		TodosDestroyOneHandler: todos.DestroyOneHandlerFunc(func(params todos.DestroyOneParams) middleware.Responder {
 			return middleware.NotImplemented("operation TodosDestroyOne has not yet been implemented")
 		}),
+		TodosFindTodoHandler: todos.FindTodoHandlerFunc(func(params todos.FindTodoParams) middleware.Responder {
+			return middleware.NotImplemented("operation TodosFindTodo has not yet been implemented")
+		}),
 		TodosFindTodosHandler: todos.FindTodosHandlerFunc(func(params todos.FindTodosParams) middleware.Responder {
 			return middleware.NotImplemented("operation TodosFindTodos has not yet been implemented")
 		}),
@@ -86,6 +89,8 @@ type TodoListAPI struct {
 	TodosAddOneHandler todos.AddOneHandler
 	// TodosDestroyOneHandler sets the operation handler for the destroy one operation
 	TodosDestroyOneHandler todos.DestroyOneHandler
+	// TodosFindTodoHandler sets the operation handler for the find todo operation
+	TodosFindTodoHandler todos.FindTodoHandler
 	// TodosFindTodosHandler sets the operation handler for the find todos operation
 	TodosFindTodosHandler todos.FindTodosHandler
 	// TodosUpdateOneHandler sets the operation handler for the update one operation
@@ -159,6 +164,10 @@ func (o *TodoListAPI) Validate() error {
 
 	if o.TodosDestroyOneHandler == nil {
 		unregistered = append(unregistered, "todos.DestroyOneHandler")
+	}
+
+	if o.TodosFindTodoHandler == nil {
+		unregistered = append(unregistered, "todos.FindTodoHandler")
 	}
 
 	if o.TodosFindTodosHandler == nil {
@@ -276,6 +285,11 @@ func (o *TodoListAPI) initHandlerCache() {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
 	o.handlers["DELETE"]["/{id}"] = todos.NewDestroyOne(o.context, o.TodosDestroyOneHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/{id}"] = todos.NewFindTodo(o.context, o.TodosFindTodoHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

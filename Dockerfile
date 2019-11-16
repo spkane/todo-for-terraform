@@ -8,7 +8,7 @@ RUN apk --no-cache add \
 RUN mkdir -p /go/src/github.com/spkane/todo-api-example
 WORKDIR /go/src/github.com/spkane/todo-api-example
 ADD . /go/src/github.com/spkane/todo-api-example
-RUN go build --ldflags '-linkmode external -extldflags "-static"' ./cmd/todo-list-server
+RUN go build --mod=vendor --ldflags '-linkmode external -extldflags "-static"' ./cmd/todo-list-server
 
 FROM alpine:3.10 AS deploy
 

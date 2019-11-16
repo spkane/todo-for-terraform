@@ -89,6 +89,16 @@ func deleteItem(id int64) error {
 	return nil
 }
 
+func getItem(id int64) (result []*models.Item, err error) {
+	_, exists := items[id]
+	if !exists {
+		return nil, errors.NotFound("not found: item %d", id)
+	}
+
+	todo := make([]*models.Item, 0)
+	return append(todo, items[id]), nil
+}
+
 func allItems(since int64, limit int32) (result []*models.Item) {
 	result = make([]*models.Item, 0)
 	for id, item := range items {
@@ -138,6 +148,13 @@ func configureAPI(api *operations.TodoListAPI) http.Handler {
 			mergedParams.Limit = params.Limit
 		}
 		return todos.NewFindTodosOK().WithPayload(allItems(*mergedParams.Since, *mergedParams.Limit))
+	})
+	api.TodosFindTodoHandler = todos.FindTodoHandlerFunc(func(params todos.FindTodoParams) middleware.Responder {
+		results, err := getItem(params.ID)
+		if err != nil {
+			return todos.NewFindTodoDefault(500).WithPayload(&models.Error{Code: 500, Message: swag.String(err.Error())})
+		}
+		return todos.NewFindTodoOK().WithPayload(results)
 	})
 	api.TodosUpdateOneHandler = todos.UpdateOneHandlerFunc(func(params todos.UpdateOneParams) middleware.Responder {
 		if err := updateItem(params.ID, params.Body); err != nil {

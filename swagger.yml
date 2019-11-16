@@ -61,6 +61,21 @@ paths:
         name: id
         in: path
         required: true
+    get:
+      tags:
+        - todos
+      operationId: findTodo
+      responses:
+        200:
+          description: list the todo
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/item"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
     put:
       tags:
         - todos
