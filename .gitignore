@@ -1,1 +1,3 @@
+terraform.tfstate*
 todo-list-server
+terraform-provider-todo
