@@ -1,3 +1,6 @@
 terraform.tfstate*
 todo-list-server
 terraform-provider-todo
+terraform-provider-todo_v*
+.terraform
+*.log

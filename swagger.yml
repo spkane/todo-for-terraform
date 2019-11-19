@@ -110,6 +110,7 @@ definitions:
     type: object
     required:
       - description
+      - completed
     properties:
       id:
         type: integer

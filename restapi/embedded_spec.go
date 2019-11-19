@@ -203,7 +203,8 @@ func init() {
     "item": {
       "type": "object",
       "required": [
-        "description"
+        "description",
+        "completed"
       ],
       "properties": {
         "completed": {
@@ -408,7 +409,8 @@ func init() {
     "item": {
       "type": "object",
       "required": [
-        "description"
+        "description",
+        "completed"
       ],
       "properties": {
         "completed": {

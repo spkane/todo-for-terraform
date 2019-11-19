@@ -18,7 +18,8 @@ import (
 type Item struct {
 
 	// completed
-	Completed bool `json:"completed,omitempty"`
+	// Required: true
+	Completed *bool `json:"completed"`
 
 	// description
 	// Required: true
@@ -34,6 +35,10 @@ type Item struct {
 func (m *Item) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateCompleted(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateDescription(formats); err != nil {
 		res = append(res, err)
 	}
@@ -41,6 +46,15 @@ func (m *Item) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *Item) validateCompleted(formats strfmt.Registry) error {
+
+	if err := validate.Required("completed", "body", m.Completed); err != nil {
+		return err
+	}
+
 	return nil
 }
 

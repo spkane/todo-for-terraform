@@ -13,6 +13,23 @@ import (
 	"github.com/spkane/todo-api-example/models"
 )
 
+func getClient() (*client.TodoList, error) {
+	transport := httptransport.New("127.0.0.1:8080", "/", []string{"http"})
+	transport.Consumers["application/spkane.todo-list.v1+json"] = runtime.JSONConsumer()
+	transport.Producers["application/spkane.todo-list.v1+json"] = runtime.JSONProducer()
+	c := client.New(transport, strfmt.Default)
+
+	params := todos.NewFindTodosParams()
+	var limit int32 = 1
+	params.SetLimit(&limit)
+	_, err := c.Todos.FindTodos(params)
+	if err != nil {
+		return nil, err
+	}
+
+	return c, nil
+}
+
 func resourceTodo() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceTodoCreate,
@@ -25,18 +42,26 @@ func resourceTodo() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
+			"completed": &schema.Schema{
+				Type:     schema.TypeBool,
+				Required: true,
+			},
 		},
 	}
 }
 
 func resourceTodoCreate(d *schema.ResourceData, m interface{}) error {
-	transport := httptransport.New("127.0.0.1:8080", "/", []string{"http"})
-	transport.Consumers["application/spkane.todo-list.v1+json"] = runtime.JSONConsumer()
-	transport.Producers["application/spkane.todo-list.v1+json"] = runtime.JSONProducer()
-	c := client.New(transport, strfmt.Default)
+	c, err := getClient()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 	description := d.Get("description").(string)
-	var todo = models.Item{Completed: false, Description: &description, ID: 0}
+	status := d.Get("completed").(bool)
+	completed := &status
 
+	// ID is read-only, and is not set directly by terraform
+	var todo = models.Item{Completed: completed, Description: &description, ID: 0}
 	params := todos.NewAddOneParams()
 	params.SetBody(&todo)
 	result, err := c.Todos.AddOne(params)
@@ -48,13 +73,114 @@ func resourceTodoCreate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceTodoRead(d *schema.ResourceData, m interface{}) error {
+	c, err := getClient()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	id, err := strconv.Atoi(d.Id())
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	params := todos.NewFindTodoParams()
+	params.SetID(int64(id))
+	result, err := c.Todos.FindTodo(params)
+
+	// If the resource does not exist, inform Terraform. We want to immediately
+	// return here to prevent further processing.
+	if err != nil {
+		d.SetId("")
+		return nil
+	}
+
+	item := result.GetPayload()
+	description := item[0].Description
+	completed := item[0].Completed
+
+	// Tell terraform what we got back from the upstream API
+	err = d.Set("description", &description)
+	if err != nil {
+		return err
+	}
+	err = d.Set("completed", &completed)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
+	// Enable partial state mode
+	// We don't really need this since we can update
+	// everything with a single call.
+	//d.Partial(true)
+
+	c, err := getClient()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	// start here - Maybe read and update are broken? (why not delete -- where are IDs)?
+	if d.HasChange("description") || d.HasChange("completed") {
+		// Try updating the todo
+		description := d.Get("description").(string)
+		completed := d.Get("completed").(bool)
+
+		id, err := strconv.Atoi(d.Id())
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+
+		var todo = models.Item{Completed: &completed, Description: &description}
+		params := todos.NewUpdateOneParams()
+		params.SetBody(&todo)
+		params.SetID(int64(id))
+		_, err = c.Todos.UpdateOne(params)
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+
+		// If we had to handle description and completion with different
+		// API calls and we were to return only after updating description,
+		// and before disabling partial mode below,
+		// then only the "description" field would be saved.
+
+		//d.SetPartial("description")
+	}
+
+	// We succeeded, disable partial mode.
+	// This causes Terraform to save all fields again.
+	//d.Partial(false)
+
 	return resourceTodoRead(d, m)
 }
 
 func resourceTodoDelete(d *schema.ResourceData, m interface{}) error {
+	c, err := getClient()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	id, err := strconv.Atoi(d.Id())
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	params := todos.NewDestroyOneParams()
+	params.SetID(int64(id))
+	_, err = c.Todos.DestroyOne(params)
+	if err != nil {
+		log.Println(err)
+	}
+
+	// As long as there are no hard errors, we can tell terraform
+	// to delete the resource as it might have been deleted out of band.
+	d.SetId("")
 	return nil
 }
