@@ -3,6 +3,7 @@ module github.com/spkane/todo-api-example
 go 1.13
 
 require (
+	github.com/aws/aws-sdk-go v1.25.3
 	github.com/go-openapi/errors v0.19.2
 	github.com/go-openapi/loads v0.19.4
 	github.com/go-openapi/runtime v0.19.8

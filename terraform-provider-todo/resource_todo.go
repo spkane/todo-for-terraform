@@ -4,31 +4,11 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/go-openapi/runtime"
-	httptransport "github.com/go-openapi/runtime/client"
-	strfmt "github.com/go-openapi/strfmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/spkane/todo-api-example/client"
 	"github.com/spkane/todo-api-example/client/todos"
 	"github.com/spkane/todo-api-example/models"
 )
-
-func getClient() (*client.TodoList, error) {
-	transport := httptransport.New("127.0.0.1:8080", "/", []string{"http"})
-	transport.Consumers["application/spkane.todo-list.v1+json"] = runtime.JSONConsumer()
-	transport.Producers["application/spkane.todo-list.v1+json"] = runtime.JSONProducer()
-	c := client.New(transport, strfmt.Default)
-
-	params := todos.NewFindTodosParams()
-	var limit int32 = 1
-	params.SetLimit(&limit)
-	_, err := c.Todos.FindTodos(params)
-	if err != nil {
-		return nil, err
-	}
-
-	return c, nil
-}
 
 func resourceTodo() *schema.Resource {
 	return &schema.Resource{
@@ -51,11 +31,9 @@ func resourceTodo() *schema.Resource {
 }
 
 func resourceTodoCreate(d *schema.ResourceData, m interface{}) error {
-	c, err := getClient()
-	if err != nil {
-		log.Println(err)
-		return err
-	}
+
+	c := m.(*client.TodoList)
+
 	description := d.Get("description").(string)
 	status := d.Get("completed").(bool)
 	completed := &status
@@ -73,11 +51,8 @@ func resourceTodoCreate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceTodoRead(d *schema.ResourceData, m interface{}) error {
-	c, err := getClient()
-	if err != nil {
-		log.Println(err)
-		return err
-	}
+	c := m.(*client.TodoList)
+
 	id, err := strconv.Atoi(d.Id())
 	if err != nil {
 		log.Println(err)
@@ -117,11 +92,7 @@ func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
 	// everything with a single call.
 	//d.Partial(true)
 
-	c, err := getClient()
-	if err != nil {
-		log.Println(err)
-		return err
-	}
+	c := m.(*client.TodoList)
 
 	// start here - Maybe read and update are broken? (why not delete -- where are IDs)?
 	if d.HasChange("description") || d.HasChange("completed") {
@@ -161,11 +132,8 @@ func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceTodoDelete(d *schema.ResourceData, m interface{}) error {
-	c, err := getClient()
-	if err != nil {
-		log.Println(err)
-		return err
-	}
+	c := m.(*client.TodoList)
+
 	id, err := strconv.Atoi(d.Id())
 	if err != nil {
 		log.Println(err)

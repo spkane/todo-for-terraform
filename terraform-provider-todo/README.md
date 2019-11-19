@@ -2,6 +2,6 @@ go build --mod=vendor -o terraform-provider-todo
 
 ## TODO
 
-* Add versioning
-* Add provider block
-* Add import
+* Add versioning via CI/CD pipeline
+* Add provider block support
+* Add import functionality
