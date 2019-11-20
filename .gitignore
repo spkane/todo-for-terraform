@@ -4,3 +4,4 @@ terraform-provider-todo
 terraform-provider-todo_v*
 .terraform
 *.log
+.DS_Store

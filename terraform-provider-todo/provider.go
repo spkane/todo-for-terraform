@@ -37,6 +37,9 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("TODO_APIPATH", "/"),
 			},
 		},
+		DataSourcesMap: map[string]*schema.Resource{
+			"todo": dataSourceTodo(),
+		},
 		ResourcesMap: map[string]*schema.Resource{
 			"todo": resourceTodo(),
 		},

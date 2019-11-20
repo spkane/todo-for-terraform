@@ -16,6 +16,9 @@ func resourceTodo() *schema.Resource {
 		Read:   resourceTodoRead,
 		Update: resourceTodoUpdate,
 		Delete: resourceTodoDelete,
+		// Exists can be used to take some load off of Read,
+		// but we do not need it here.
+		//Exists: resourceTodoExists,
 
 		Schema: map[string]*schema.Schema{
 			"description": &schema.Schema{
@@ -44,7 +47,7 @@ func resourceTodoCreate(d *schema.ResourceData, m interface{}) error {
 	params.SetBody(&todo)
 	result, err := c.Todos.AddOne(params)
 	if err != nil {
-		log.Println(err)
+		log.Printf("[DEBUG] %s", err)
 	}
 	d.SetId(strconv.FormatInt(result.GetPayload().ID, 10))
 	return resourceTodoRead(d, m)
@@ -55,7 +58,7 @@ func resourceTodoRead(d *schema.ResourceData, m interface{}) error {
 
 	id, err := strconv.Atoi(d.Id())
 	if err != nil {
-		log.Println(err)
+		log.Printf("[DEBUG] %s", err)
 		return err
 	}
 
@@ -102,7 +105,7 @@ func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
 
 		id, err := strconv.Atoi(d.Id())
 		if err != nil {
-			log.Println(err)
+			log.Printf("[DEBUG] %s", err)
 			return err
 		}
 
@@ -112,7 +115,7 @@ func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
 		params.SetID(int64(id))
 		_, err = c.Todos.UpdateOne(params)
 		if err != nil {
-			log.Println(err)
+			log.Printf("[DEBUG] %s", err)
 			return err
 		}
 
@@ -136,7 +139,7 @@ func resourceTodoDelete(d *schema.ResourceData, m interface{}) error {
 
 	id, err := strconv.Atoi(d.Id())
 	if err != nil {
-		log.Println(err)
+		log.Printf("[DEBUG] %s", err)
 		return err
 	}
 
@@ -144,7 +147,7 @@ func resourceTodoDelete(d *schema.ResourceData, m interface{}) error {
 	params.SetID(int64(id))
 	_, err = c.Todos.DestroyOne(params)
 	if err != nil {
-		log.Println(err)
+		log.Printf("[DEBUG] %s", err)
 	}
 
 	// As long as there are no hard errors, we can tell terraform

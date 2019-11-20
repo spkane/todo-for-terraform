@@ -11,8 +11,13 @@ resource "todo" "test1" {
   completed = false
 }
 
+data "todo" "foreign" {
+  depends_on = ["todo.test1"]
+  id = 1
+}
+
 resource "todo" "test2" {
   count = 6
-  description = "${count.index}-2 test todo"
+  description = "${count.index}-2 test todo (linked to ${data.todo.foreign.id})"
   completed = false
 }
