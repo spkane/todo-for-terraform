@@ -9,6 +9,8 @@ import (
 	"github.com/spkane/todo-for-terraform/client/todos"
 )
 
+// Provider returns the provider schema.
+// - provider, resources, data source, and configuration.
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
@@ -47,6 +49,8 @@ func Provider() *schema.Provider {
 	}
 }
 
+// configureFunc sets up the provider.
+// Primarily it instantiates the todo server client.
 func configureFunc() func(*schema.ResourceData) (interface{}, error) {
 	return func(d *schema.ResourceData) (interface{}, error) {
 		hostport := d.Get("host").(string) + ":" + d.Get("port").(string)

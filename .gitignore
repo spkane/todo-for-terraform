@@ -1,7 +1,15 @@
+# Terrform
 terraform.tfstate*
-todo-list-server
-terraform-provider-todo
-terraform-provider-todo_v*
 .terraform
 *.log
+
+# Binaries
+terraform-provider-todo
+terraform-provider-todo_v*
+todo-list-server
+
+# System Files
 .DS_Store
+
+# Don't ignore these
+!/terraform-provider-todo/

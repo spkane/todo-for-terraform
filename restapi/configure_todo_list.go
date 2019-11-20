@@ -24,6 +24,8 @@ var exampleFlags = struct {
 	Example2 string `long:"example2" description:"Further info at https://github.com/jessevdk/go-flags"`
 }{}
 
+// configureFlags is for setting up the command line flags.
+// This currently unused.
 func configureFlags(api *operations.TodoListAPI) {
 	api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{
 		swag.CommandLineOptionsGroup{
@@ -39,10 +41,12 @@ var lastID int64
 
 var itemsLock = &sync.Mutex{}
 
+// newItemID atomically generates the next item ID.
 func newItemID() int64 {
 	return atomic.AddInt64(&lastID, 1)
 }
 
+// addItem adds a single todo
 func addItem(item *models.Item) error {
 	if item == nil {
 		return errors.New(500, "item must be present")
@@ -58,6 +62,7 @@ func addItem(item *models.Item) error {
 	return nil
 }
 
+// updateItem updates a single todo
 func updateItem(id int64, item *models.Item) error {
 	if item == nil {
 		return errors.New(500, "item must be present")
@@ -76,6 +81,7 @@ func updateItem(id int64, item *models.Item) error {
 	return nil
 }
 
+// deteItem deletes a single todo
 func deleteItem(id int64) error {
 	itemsLock.Lock()
 	defer itemsLock.Unlock()
@@ -89,6 +95,7 @@ func deleteItem(id int64) error {
 	return nil
 }
 
+// getItem returns a single todo
 func getItem(id int64) (result []*models.Item, err error) {
 	_, exists := items[id]
 	if !exists {
@@ -99,6 +106,7 @@ func getItem(id int64) (result []*models.Item, err error) {
 	return append(todo, items[id]), nil
 }
 
+// allItems returns a group of todos with some basic filtering (since & limit)
 func allItems(since int64, limit int32) (result []*models.Item) {
 	result = make([]*models.Item, 0)
 	for id, item := range items {
@@ -112,6 +120,7 @@ func allItems(since int64, limit int32) (result []*models.Item) {
 	return
 }
 
+// configureAPI sets up the behavior for the various API endpoints
 func configureAPI(api *operations.TodoListAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
@@ -170,12 +179,12 @@ func configureAPI(api *operations.TodoListAPI) http.Handler {
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
 }
 
-// The TLS configuration before HTTPS server starts.
+// configureTLS : The TLS configuration before HTTPS server starts.
 func configureTLS(tlsConfig *tls.Config) {
 	// Make all necessary changes to the TLS configuration here.
 }
 
-// As soon as server is initialized but not run yet, this function will be called.
+// configureServer : As soon as server is initialized but not run yet, this function will be called.
 // If you need to modify a config, store server instance to stop it individually later, this is the place.
 // This function can be called multiple times, depending on the number of serving schemes.
 // scheme value will be set accordingly: "http", "https" or "unix"
@@ -185,13 +194,13 @@ func configureServer(s *http.Server, scheme, addr string) {
 	}
 }
 
-// The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
+// setupMiddlewares : The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation
 func setupMiddlewares(handler http.Handler) http.Handler {
 	return handler
 }
 
-// The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
+// setupGlobalMiddleware : The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
 // So this is a good place to plug in a panic handling middleware, logging and metrics
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
 	return handler

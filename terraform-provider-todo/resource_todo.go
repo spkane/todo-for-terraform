@@ -10,6 +10,7 @@ import (
 	"github.com/spkane/todo-for-terraform/models"
 )
 
+// resourceTodo returns the resourceTodo resource schema
 func resourceTodo() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceTodoCreate,
@@ -36,6 +37,7 @@ func resourceTodo() *schema.Resource {
 	}
 }
 
+// resourceTodoCreate creates a single todo resource and updates the state
 func resourceTodoCreate(d *schema.ResourceData, m interface{}) error {
 
 	c := m.(*client.TodoList)
@@ -56,6 +58,7 @@ func resourceTodoCreate(d *schema.ResourceData, m interface{}) error {
 	return resourceTodoRead(d, m)
 }
 
+//resourceTodoRead reads a single todo resource and updates the state
 func resourceTodoRead(d *schema.ResourceData, m interface{}) error {
 	c := m.(*client.TodoList)
 
@@ -92,6 +95,7 @@ func resourceTodoRead(d *schema.ResourceData, m interface{}) error {
 	return nil
 }
 
+//resourceTodoUpdate modifies a single todo resource and updates the state
 func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
 	// Enable partial state mode
 	// We don't really need this since we can update
@@ -100,7 +104,6 @@ func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
 
 	c := m.(*client.TodoList)
 
-	// start here - Maybe read and update are broken? (why not delete -- where are IDs)?
 	if d.HasChange("description") || d.HasChange("completed") {
 		// Try updating the todo
 		description := d.Get("description").(string)
@@ -137,6 +140,7 @@ func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
 	return resourceTodoRead(d, m)
 }
 
+// resourceTodoDelete deletes a single todo resource and updates the state
 func resourceTodoDelete(d *schema.ResourceData, m interface{}) error {
 	c := m.(*client.TodoList)
 
