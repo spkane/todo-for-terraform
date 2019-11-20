@@ -8,11 +8,13 @@
 ## Todo Server
 
 ### Build
+
 ```
 ./scripts/build.sh
 ```
 
 ### Usage
+
 ```
 curl -i http://127.0.0.1:8080/
 curl -i http://127.0.0.1:8080/ -d "{\"description\":\"message $RANDOM\"}" -H 'Content-Type: application/spkane.todo-list.v1+json'
@@ -27,6 +29,7 @@ curl -i http://127.0.0.1:8080
 ## Terraform Provider
 
 ### Build & Test
+
 ```
 ./scripts/build.sh
 ./scripts/test.sh
@@ -35,7 +38,7 @@ curl -i http://127.0.0.1:8080
 ---
 
 * *NOTE*: The todo server code for this project was directly forked from:
-  * https://github.com/go-swagger/go-swagger/tree/master/examples/tutorials/todo-list/server-complete
+  * [github.com/go-swagger](https://github.com/go-swagger/go-swagger/tree/master/examples/tutorials/todo-list/server-complete)
 
 
 ## TODOs
