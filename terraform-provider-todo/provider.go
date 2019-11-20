@@ -5,8 +5,8 @@ import (
 	httptransport "github.com/go-openapi/runtime/client"
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/spkane/todo-api-example/client"
-	"github.com/spkane/todo-api-example/client/todos"
+	"github.com/spkane/todo-for-terraform/client"
+	"github.com/spkane/todo-for-terraform/client/todos"
 )
 
 func Provider() *schema.Provider {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	models "github.com/spkane/todo-api-example/models"
+	models "github.com/spkane/todo-for-terraform/models"
 )
 
 // FindTodoOKCode is the HTTP code returned for type FindTodoOK

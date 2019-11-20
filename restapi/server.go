@@ -25,7 +25,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"github.com/spkane/todo-api-example/restapi/operations"
+	"github.com/spkane/todo-for-terraform/restapi/operations"
 )
 
 const (

@@ -19,7 +19,7 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/spkane/todo-api-example/restapi/operations/todos"
+	"github.com/spkane/todo-for-terraform/restapi/operations/todos"
 )
 
 // NewTodoListAPI creates a new TodoList instance

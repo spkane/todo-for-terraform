@@ -12,9 +12,9 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/swag"
 
-	"github.com/spkane/todo-api-example/models"
-	"github.com/spkane/todo-api-example/restapi/operations"
-	"github.com/spkane/todo-api-example/restapi/operations/todos"
+	"github.com/spkane/todo-for-terraform/models"
+	"github.com/spkane/todo-for-terraform/restapi/operations"
+	"github.com/spkane/todo-for-terraform/restapi/operations/todos"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten

@@ -11,7 +11,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/spkane/todo-api-example/client/todos"
+	"github.com/spkane/todo-for-terraform/client/todos"
 )
 
 // Default todo list HTTP client.

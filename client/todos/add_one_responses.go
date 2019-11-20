@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/spkane/todo-api-example/models"
+	models "github.com/spkane/todo-for-terraform/models"
 )
 
 // AddOneReader is a Reader for the AddOne structure.

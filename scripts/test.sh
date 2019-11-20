@@ -4,7 +4,7 @@ set -eu
 
 export TF="terraform-0.12.12"
 
-cd "${GOPATH}/src/github.com/spkane/todo-api-example"
+cd "${GOPATH}/src/github.com/spkane/todo-for-terraform"
 ./scripts/build.sh
 docker-compose up -d
 # Add something to import as a data source
