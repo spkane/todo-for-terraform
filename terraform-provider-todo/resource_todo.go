@@ -16,9 +16,12 @@ func resourceTodo() *schema.Resource {
 		Read:   resourceTodoRead,
 		Update: resourceTodoUpdate,
 		Delete: resourceTodoDelete,
-		// Exists can be used to take some load off of Read,
-		// but we do not need it here.
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		//Exists: resourceTodoExists,
+		// Exists can be used to take some load off of Read,
+		// but we do not need it here as it won't save any time.
 
 		Schema: map[string]*schema.Schema{
 			"description": &schema.Schema{
