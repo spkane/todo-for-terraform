@@ -37,3 +37,9 @@ curl -i http://127.0.0.1:8080
 * *NOTE*: The todo server code for this project was directly forked from:
   * https://github.com/go-swagger/go-swagger/tree/master/examples/tutorials/todo-list/server-complete
 
+
+## TODOs
+
+* https setup
+* go code comments/docs
+* go tests
