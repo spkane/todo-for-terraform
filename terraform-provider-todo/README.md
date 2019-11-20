@@ -1,7 +1,1 @@
-go build --mod=vendor -o terraform-provider-todo
-
-## TODO
-
-* Add versioning via CI/CD pipeline
-* Add import functionality
-* Add a datasource
+go build --mod=vendor -o terraform-provider-todo_v0.0.1

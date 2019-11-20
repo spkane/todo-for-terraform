@@ -1,0 +1,20 @@
+version: "3"
+services:
+  todo:
+    container_name: todo
+    build:
+      context: .
+    image: todo-local
+    restart: unless-stopped
+    networks:
+      - my-net
+    ports:
+        - "8080:80"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1/?limit=1"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+networks:
+  my-net:
+    driver: bridge
