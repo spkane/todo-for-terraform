@@ -5,9 +5,9 @@ import (
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/spkane/todo-api-example/client"
-	"github.com/spkane/todo-api-example/client/todos"
-	"github.com/spkane/todo-api-example/models"
+	"github.com/spkane/todo-for-terraform/client"
+	"github.com/spkane/todo-for-terraform/client/todos"
+	"github.com/spkane/todo-for-terraform/models"
 )
 
 func resourceTodo() *schema.Resource {
