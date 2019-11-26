@@ -1,0 +1,17 @@
+[Unit]
+Description=Todo List Server Container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStartPre-=/usr/bin/docker rm -f todo-list
+ExecStart=/usr/bin/docker run \
+  --name todo-list \
+  -p 8080:80 \
+  spkane/todo-list-server:latest
+ExecStop=/usr/bin/docker stop -t 2 todo-list
+ExecStopPost=/usr/bin/docker rm -f todo-list
+
+[Install]
+WantedBy=local.target

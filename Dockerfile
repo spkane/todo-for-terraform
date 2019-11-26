@@ -7,6 +7,8 @@ RUN apk --no-cache add \
     openssl
 RUN mkdir -p /go/src/github.com/spkane/todo-for-terraform
 WORKDIR /go/src/github.com/spkane/todo-for-terraform
+# This copies in more than we need, but since we are
+# creating a second image it is not really a big deal.
 ADD . /go/src/github.com/spkane/todo-for-terraform
 RUN go build -mod=vendor --ldflags '-linkmode external -extldflags "-static"' ./cmd/todo-list-server
 
