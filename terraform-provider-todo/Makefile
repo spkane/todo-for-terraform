@@ -6,7 +6,7 @@ default: test
 
 # bin generates the releaseable binaries for Terraform
 bin: fmtcheck
-	@TF_RELEASE=1 sh -c "'$(CURDIR)/../scripts/tf_build.sh'"
+	@TF_RELEASE=1 sh -c "'$(CURDIR)/../scripts/tf_complete_build.sh'"
 
 # dev creates binaries for testing Terraform locally. These are put
 # into ./bin/ as well as $GOPATH/bin
@@ -35,7 +35,17 @@ testacc: fmtcheck
 		echo "  make testacc TEST=./builtin/providers/test"; \
 		exit 1; \
 	fi
-	TF_ACC=1 go test $(TEST) -v $(TESTARGS) -mod=vendor -timeout 120m
+	@echo "==> Preparing environment"
+	@docker-compose down > /dev/null 2>&1
+	@docker-compose up -d
+	@curl -i http://127.0.0.1:8080/1 -X DELETE -H 'Content-Type: application/spkane.todo-list.v1+json' > /dev/null 2>&1
+	@echo "==> Creating data for testing"
+	@curl -i http://127.0.0.1:8080/ -X POST -H 'Content-Type: application/spkane.todo-list.v1+json' -d '{"description":"datasource test","completed":false}' > /dev/null 2>&1
+	@curl http://127.0.0.1:8080/
+	@echo "==> Starting tests"
+	TODO_HOST=127.0.0.1 TODO_PORT=8080 TF_ACC=1 go test $(TEST) -v $(TESTARGS) -mod=vendor -timeout 120m
+	@echo "==> Tearing down environment"
+	docker-compose down
 
 # e2etest runs the end-to-end tests against a generated Terraform binary
 # The TF_ACC here allows network access, but does not require any special
