@@ -1,9 +1,9 @@
 # Todo for Terraform
 
-* Requires:
-  * go (compiling)
-  * docker (build & test scripts)
-  * docker-compose (build & test scripts)
+* Requires (recent versions, but approximate):
+  * go 1.13.X (compiling)
+  * docker 19.X (build & test scripts)
+  * docker-compose 1.24.X (build & test scripts)
 
 ## Todo Server
 
@@ -32,6 +32,12 @@ curl -i http://127.0.0.1:8080
 
 ```
 ./scripts/build.sh
+```
+
+The build script runs the Integration tests. If you want to run real local terraform tests, you can run this script:
+
+```
+./scripts/tests_manual.sh
 ```
 
 ---
