@@ -32,7 +32,6 @@ curl -i http://127.0.0.1:8080
 
 ```
 ./scripts/build.sh
-./scripts/test.sh
 ```
 
 ---
@@ -44,4 +43,3 @@ curl -i http://127.0.0.1:8080
 ## TODOs
 
 * https setup
-* go tests
