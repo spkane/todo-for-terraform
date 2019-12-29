@@ -107,6 +107,6 @@ resource "ns1_record" "todo-api" {
   }
 
   answers {
-    answer = "${aws_lb.todo.dns_name}"
+    answer = aws_lb.todo.dns_name
   }
 }

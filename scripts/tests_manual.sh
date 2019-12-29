@@ -2,7 +2,7 @@
 
 set -eu
 
-export TF="terraform-0.12.12"
+export TF="terraform12"
 
 cd "${GOPATH}/src/github.com/spkane/todo-for-terraform"
 ./scripts/build.sh

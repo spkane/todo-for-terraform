@@ -21,5 +21,5 @@ provider "aws" {
 }
 
 provider "ns1" {
-  apikey = "${var.personal_ns1_apikey}"
+  apikey = var.personal_ns1_apikey
 }
