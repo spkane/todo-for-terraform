@@ -49,3 +49,4 @@ The build script runs the Integration tests. If you want to run real local terra
 ## TODOs
 
 * https setup
+* Setup docker-compose to use pre-built binary

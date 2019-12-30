@@ -4,6 +4,8 @@ terraform.tfstate*
 *.log
 terraform-provider-todo/bin/
 terraform-provider-todo/pkg/
+cmd/todo-list-server/pkg/
+cmd/todo-list-server/bin/
 
 # Binaries
 terraform-provider-todo
