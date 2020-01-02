@@ -11,12 +11,12 @@ data "todo" "foreign" {
 
 resource "todo" "test1" {
   count = 5
-  description = "${count.index}-1 test todo"
+  description = "${count.index}-1 ${var.purpose} todo"
   completed = false
 }
 
 resource "todo" "test2" {
   count = 5
-  description = "${count.index}-2 test todo (linked to ${data.todo.foreign.id})"
+  description = "${count.index}-2 ${var.purpose} todo (linked to ${data.todo.foreign.id})"
   completed = false
 }
