@@ -7,15 +7,21 @@
 
 ## Todo Server
 
+### Quick Start
+
+```shell
+docker run --name todo-list -p 8080:80 spkane/todo-list-server:latest
+```
+
 ### Build
 
-```
+```shell
 ./scripts/build.sh
 ```
 
 ### Usage
 
-```
+```shell
 curl -i http://127.0.0.1:8080/
 curl -i http://127.0.0.1:8080/ -d "{\"description\":\"message $RANDOM\"}" -H 'Content-Type: application/spkane.todo-list.v1+json'
 curl -i http://127.0.0.1:8080/ -d "{\"description\":\"message $RANDOM\",\"completed\":false}" -H 'Content-Type: application/spkane.todo-list.v1+json'
@@ -30,13 +36,13 @@ curl -i http://127.0.0.1:8080
 
 ### Build & Test
 
-```
+```shell
 ./scripts/build.sh
 ```
 
 The build script runs the Integration tests. If you want to run real local terraform tests, you can run this script:
 
-```
+```shell
 ./scripts/tests_manual.sh
 ```
 
