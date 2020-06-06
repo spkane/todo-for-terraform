@@ -16,7 +16,7 @@ docker run --name todo-list -p 8080:80 spkane/todo-list-server:latest
 ### Build
 
 ```shell
-./scripts/build.sh
+./bin/build.sh
 ```
 
 ### Usage
@@ -37,13 +37,13 @@ curl -i http://127.0.0.1:8080
 ### Build & Test
 
 ```shell
-./scripts/build.sh
+./bin/build.sh
 ```
 
 The build script runs the Integration tests. If you want to run real local terraform tests, you can run this script:
 
 ```shell
-./scripts/tests_manual.sh
+./bin/tests_manual.sh
 ```
 
 ---

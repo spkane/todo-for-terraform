@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
-./scripts/tf_complete_build.sh
+./bin/tf_complete_build.sh
 docker-compose build
 
 cd terraform-provider-todo

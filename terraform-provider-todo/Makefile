@@ -6,7 +6,7 @@ default: test
 
 # bin generates the releaseable binaries for Terraform
 bin: fmtcheck
-	@TF_RELEASE=1 sh -c "'$(CURDIR)/../scripts/tf_complete_build.sh'"
+	@TF_RELEASE=1 sh -c "'$(CURDIR)/../bin/tf_complete_build.sh'"
 
 # dev creates binaries for testing Terraform locally. These are put
 # into ./bin/ as well as $GOPATH/bin
@@ -74,7 +74,7 @@ fmt:
 	gofmt -w $(GOFMT_FILES)
 
 fmtcheck:
-	@sh -c "'$(CURDIR)/../scripts/gofmtcheck.sh'"
+	@sh -c "'$(CURDIR)/../bin/gofmtcheck.sh'"
 
 # disallow any parallelism (-j) for Make. This is necessary since some
 # commands during the build process create temporary files that collide

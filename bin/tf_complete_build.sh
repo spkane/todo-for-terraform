@@ -2,6 +2,8 @@
 #
 # This script builds the application from source for multiple platforms.
 
+set -eu -o pipefail
+
 # Get the parent directory of where this script is.
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
@@ -33,11 +35,24 @@ for DIR in "${DIRS[@]}"; do
     mkdir -p bin/
     
     # If its dev mode, only build for ourself
-    if [[ -n "${TF_DEV}" ]]; then
+    set +u
+    if [[ -z "${TF_DEV}" ]]; then
+        TF_DEV="false"
+    fi
+    set -u
+
+    set +u
+    if [[ -z "${LD_FLAGS}" ]]; then
+        LD_FLAGS=""
+    fi
+    set -u
+    
+    if [[ "${TF_DEV}" == "true" ]]; then
         XC_OS=$(go env GOOS)
         XC_ARCH=$(go env GOARCH)
     
         # Allow LD_FLAGS to be appended during development compilations
+
         LD_FLAGS="-X main.GitCommit=${GIT_COMMIT}${GIT_DIRTY} $LD_FLAGS"
     fi
     
@@ -50,7 +65,13 @@ for DIR in "${DIRS[@]}"; do
     export CGO_ENABLED=0
     
     # In release mode we don't want debug information in the binary
-    if [[ -n "${TF_RELEASE}" ]]; then
+    set +u
+    if [[ -z "${TF_RELEASE}" ]]; then
+        TF_RELEASE="false"
+    fi
+    set -u
+
+    if [[ "${TF_RELEASE}" == "true" ]]; then
         LD_FLAGS="-s -w"
     fi
     
