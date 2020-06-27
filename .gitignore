@@ -1,5 +1,6 @@
 # Terrform
 tf-code/
+plan.out
 terraform.tfstate*
 .terraform
 *.log
