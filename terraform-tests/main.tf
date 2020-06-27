@@ -6,7 +6,7 @@ provider "todo" {
 }
 
 data "todo" "foreign" {
-  id = 2
+  id = 1
 }
 
 resource "todo" "test1" {
