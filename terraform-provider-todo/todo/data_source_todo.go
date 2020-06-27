@@ -4,7 +4,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/spkane/todo-for-terraform/client"
 	"github.com/spkane/todo-for-terraform/client/todos"
 )
