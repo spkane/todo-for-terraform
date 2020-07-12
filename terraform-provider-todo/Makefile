@@ -37,6 +37,7 @@ testacc: fmtcheck
 	fi
 	@echo "==> Preparing environment"
 	@docker-compose down > /dev/null 2>&1
+	@docker-compose build
 	@docker-compose up -d
 	@curl -i http://127.0.0.1:8080/1 -X DELETE -H 'Content-Type: application/spkane.todo-list.v1+json' > /dev/null 2>&1
 	@echo "==> Creating data for testing"
