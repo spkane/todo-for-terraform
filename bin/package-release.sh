@@ -16,7 +16,7 @@ rm -f *.tar.gz
 
 for i in $(ls -C1 .); do
   cd ${i}
-  tar -cvzf ../${i}-todo_list_server.tar.gz *
+  tar -cvzf ../todo_list_server-${i}.tar.gz *
   cd ..
 done
 
@@ -26,7 +26,7 @@ rm -f *.tar.gz
 
 for i in $(ls -C1 .); do
   cd ${i}
-  tar -cvzf ../${i}-todo_list_server.tar.gz *
+  tar -cvzf ../terraform-provider-todo-${i}.tar.gz *
   cd ..
 done
 

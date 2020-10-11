@@ -1,9 +1,10 @@
 # Todo for Terraform
 
 * Requires (recent versions, but approximate):
-  * go 1.13.X (compiling)
-  * docker 19.X (build & test scripts)
-  * docker-compose 1.24.X (build & test scripts)
+  * terraform 0.13.X+
+  * go 1.15.X+ (compiling)
+  * docker 19.X+ (build & test scripts)
+  * docker-compose 1.24.X+ (build & test scripts)
 
 ## Todo Server
 
@@ -44,6 +45,25 @@ The build script runs the Integration tests. If you want to run real local terra
 
 ```shell
 ./bin/tests_manual.sh
+```
+
+### Install
+
+In general the provider must be copied into the following directory so that terraform can find it:
+
+`$HOME/.terraform.d/plugins/terraform.spkane.org/spkane/todo/${VERSION}/${OS}_${ARCH}/`
+
+and in your terraform hcl you will need to refernce the prociver with something like this:
+
+```
+terraform {
+  required_providers {
+    todo = {
+      source  = "terraform.spkane.org/spkane/todo"
+      versions = ["1.1.0"]
+    }
+  }
+}
 ```
 
 ---
