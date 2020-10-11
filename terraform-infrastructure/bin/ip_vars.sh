@@ -9,7 +9,7 @@ else
   exit 1
 fi
 
-export todo=$(terraform12 output  | grep todo_ips | cut -d " " -f 3)
+export todo=$(terraform output  | grep todo_ips | cut -d " " -f 3)
 num=0
 for i in $(echo $todo | sed "s/,/ /g")
 do

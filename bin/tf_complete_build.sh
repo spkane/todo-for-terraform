@@ -10,8 +10,8 @@ while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
 DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 
 # Just force this for now...
-DIR1="${GOPATH}/src/github.com/spkane/todo-for-terraform/terraform-provider-todo"
-DIR2="${GOPATH}/src/github.com/spkane/todo-for-terraform/cmd/todo-list-server"
+DIR1="$HOME/dev/spkane/todo-for-terraform/terraform-provider-todo"
+DIR2="$HOME/dev/spkane/todo-for-terraform/cmd/todo-list-server"
 declare -a DIRS=("${DIR1}" "${DIR2}")
 
 for DIR in "${DIRS[@]}"; do

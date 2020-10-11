@@ -7,8 +7,7 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 
 	// Terraform Libraries
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	// Todo API Libraries
 	"github.com/spkane/todo-for-terraform/client"
@@ -17,7 +16,7 @@ import (
 
 // Provider returns the provider schema.
 // - provider, resources, data source, and configuration.
-func Provider() terraform.ResourceProvider {
+func Provider() *schema.Provider {
 
 	// The actual provider
 	provider := &schema.Provider{

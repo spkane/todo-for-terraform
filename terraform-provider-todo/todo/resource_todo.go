@@ -4,7 +4,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/spkane/todo-for-terraform/client"
 	"github.com/spkane/todo-for-terraform/client/todos"
 	"github.com/spkane/todo-for-terraform/models"
@@ -155,6 +155,7 @@ func resourceTodoDelete(d *schema.ResourceData, m interface{}) error {
 	_, err = c.Todos.DestroyOne(params)
 	if err != nil {
 		log.Printf("[DEBUG] %s", err)
+		return err
 	}
 
 	// As long as there are no hard errors, we can tell terraform

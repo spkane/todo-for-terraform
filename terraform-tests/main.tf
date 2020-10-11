@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    todo = {
+      source  = "terraform.spkane.org/spkane/todo"
+      versions = ["1.0.0"]
+    }
+  }
+}
+
 provider "todo" {
   host = "127.0.0.1"
   port = "8080"

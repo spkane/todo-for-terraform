@@ -2,7 +2,7 @@ package main
 
 import (
 	// Upstream Terraform Plugin Library
-	"github.com/hashicorp/terraform-plugin-sdk/plugin"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 	// Our local Terraform Provider code
 	"github.com/spkane/todo-for-terraform/terraform-provider-todo/todo"
 )
