@@ -1,6 +1,6 @@
 module github.com/spkane/todo-for-terraform
 
-go 1.13
+go 1.15
 
 require (
 	github.com/go-openapi/errors v0.19.7
