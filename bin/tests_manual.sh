@@ -23,8 +23,6 @@ curl -i http://127.0.0.1:8080/ -X POST -H 'Content-Type: application/spkane.todo
 cd terraform-tests
 rm -f terraform-provider-todo
 mkdir -p ~/.terraform.d/plugins/terraform.spkane.org/spkane/todo/${VERSION}/${OS}_${ARCH}
-# This line is a work around for a current bug in 0.13.4
-ln -sfn ~/.terraform.d/plugins/terraform.spkane.org/spkane/todo/${VERSION} ~/.terraform.d/plugins/terraform.spkane.org/spkane/todo/1.0.0
 cp ../terraform-provider-todo/bin/terraform-provider-todo ~/.terraform.d/plugins/terraform.spkane.org/spkane/todo/${VERSION}/${OS}_${ARCH}/
 ${TF} init --get --upgrade=true
 TF_LOG=debug ${TF} apply
