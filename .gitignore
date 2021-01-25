@@ -3,6 +3,7 @@ tf-code/
 plan.out
 terraform.tfstate*
 .terraform
+.terraform.lock.hcl
 *.log
 terraform-provider-todo/bin/
 terraform-provider-todo/pkg/

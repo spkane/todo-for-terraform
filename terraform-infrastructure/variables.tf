@@ -7,13 +7,13 @@ variable "aws_profile" {
 variable "ssh_private_key_path" {
     type = string
     description = "Path to EC2 SSH private key"
-    default = "/Users/skane/.ssh/oreilly_aws"
+    default = "/Users/spkane/.ssh/oreilly_aws"
 }
 
 variable "ssh_public_key_path" {
     type = string
     description = "Path to EC2 SSH public key"
-    default = "/Users/skane/.ssh/oreilly_aws.pub"
+    default = "/Users/spkane/.ssh/oreilly_aws.pub"
 }
 
 variable "personal_ns1_apikey" {

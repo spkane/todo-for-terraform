@@ -27,7 +27,7 @@ resource "aws_security_group" "instances" {
   }
 
   tags = { 
-    Name = "terraform-training-skane"
+    Name = "terraform-training-spkane"
     Trainer = "Sean P. Kane"
   }
 }
@@ -53,7 +53,7 @@ resource "aws_security_group" "public_lb" {
   }
 
   tags = { 
-    Name = "terraform-training-skane"
+    Name = "terraform-training-spkane"
     Trainer = "Sean P. Kane"
   }
 }

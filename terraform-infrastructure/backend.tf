@@ -47,7 +47,7 @@ resource "aws_instance" "todo" {
     ]
   }
   tags = {
-    Name = "terraform-${count.index}-skane"
+    Name = "terraform-${count.index}-spkane"
     Trainer = "Sean P. Kane"
   }
 }
