@@ -7,13 +7,6 @@ terraform {
   }
 }
 
-provider "todo" {
-  host = "127.0.0.1"
-  port = "8080"
-  apipath = "/"
-  schema = "http"
-}
-
 resource "todo" "first_series" {
   count = var.number
   description = "${var.team_name}-${count.index} ${var.purpose} todo"

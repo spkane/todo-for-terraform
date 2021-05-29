@@ -26,6 +26,6 @@ resource "todo" "test1" {
 
 resource "todo" "test2" {
   count = 5
-  description = "${count.index}-2 ${var.purpose} todo (linked to ${data.todo.foreign.id})"
+  description = "${count.index}-2 ${var.purpose} todo (linked to ${data.todo.foreign.description})"
   completed = false
 }
