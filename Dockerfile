@@ -1,4 +1,4 @@
-FROM golang:1.15-alpine3.12 AS build
+FROM golang:1.16-alpine AS build
 
 RUN apk --no-cache add \
     bash \
@@ -12,7 +12,7 @@ WORKDIR /go/src/github.com/spkane/todo-for-terraform
 ADD . /go/src/github.com/spkane/todo-for-terraform
 RUN go build -mod=vendor --ldflags '-linkmode external -extldflags "-static"' ./cmd/todo-list-server
 
-FROM alpine:3.12 AS deploy
+FROM alpine:3.14 AS deploy
 
 WORKDIR /
 COPY --from=build /go/src/github.com/spkane/todo-for-terraform/todo-list-server /
