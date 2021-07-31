@@ -10,17 +10,22 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 	testing "github.com/mitchellh/go-testing-interface"
 
+	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/internal/plugintest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
-func runPostTestDestroy(t testing.T, c TestCase, wd *plugintest.WorkingDir, factories map[string]func() (*schema.Provider, error), statePreDestroy *terraform.State) error {
+func runPostTestDestroy(t testing.T, c TestCase, wd *plugintest.WorkingDir, factories map[string]func() (*schema.Provider, error), v5factories map[string]func() (tfprotov5.ProviderServer, error), v6factories map[string]func() (tfprotov6.ProviderServer, error), statePreDestroy *terraform.State) error {
 	t.Helper()
 
 	err := runProviderCommand(t, func() error {
 		return wd.Destroy()
-	}, wd, factories)
+	}, wd, providerFactories{
+		legacy:  factories,
+		protov5: v5factories,
+		protov6: v6factories})
 	if err != nil {
 		return err
 	}
@@ -50,14 +55,17 @@ func runNewTest(t testing.T, c TestCase, helper *plugintest.Helper) {
 				return err
 			}
 			return nil
-		}, wd, c.ProviderFactories)
+		}, wd, providerFactories{
+			legacy:  c.ProviderFactories,
+			protov5: c.ProtoV5ProviderFactories,
+			protov6: c.ProtoV6ProviderFactories})
 		if err != nil {
 			t.Fatalf("Error retrieving state, there may be dangling resources: %s", err.Error())
 			return
 		}
 
 		if !stateIsEmpty(statePreDestroy) {
-			err := runPostTestDestroy(t, c, wd, c.ProviderFactories, statePreDestroy)
+			err := runPostTestDestroy(t, c, wd, c.ProviderFactories, c.ProtoV5ProviderFactories, c.ProtoV6ProviderFactories, statePreDestroy)
 			if err != nil {
 				t.Fatalf("Error running post-test destroy, there may be dangling resources: %s", err.Error())
 			}
@@ -77,7 +85,10 @@ func runNewTest(t testing.T, c TestCase, helper *plugintest.Helper) {
 	}
 	err = runProviderCommand(t, func() error {
 		return wd.Init()
-	}, wd, c.ProviderFactories)
+	}, wd, providerFactories{
+		legacy:  c.ProviderFactories,
+		protov5: c.ProtoV5ProviderFactories,
+		protov6: c.ProtoV6ProviderFactories})
 	if err != nil {
 		t.Fatalf("Error running init: %s", err.Error())
 		return
@@ -113,6 +124,9 @@ func runNewTest(t testing.T, c TestCase, helper *plugintest.Helper) {
 					t.Fatalf("Step %d/%d error running import, expected an error with pattern (%s), no match on: %s", i+1, len(c.Steps), step.ExpectError.String(), err)
 				}
 			} else {
+				if err != nil && c.ErrorCheck != nil {
+					err = c.ErrorCheck(err)
+				}
 				if err != nil {
 					t.Fatalf("Step %d/%d error running import: %s", i+1, len(c.Steps), err)
 				}
@@ -130,6 +144,9 @@ func runNewTest(t testing.T, c TestCase, helper *plugintest.Helper) {
 					t.Fatalf("Step %d/%d, expected an error with pattern, no match on: %s", i+1, len(c.Steps), err)
 				}
 			} else {
+				if err != nil && c.ErrorCheck != nil {
+					err = c.ErrorCheck(err)
+				}
 				if err != nil {
 					t.Fatalf("Step %d/%d error: %s", i+1, len(c.Steps), err)
 				}
@@ -211,7 +228,10 @@ func testIDRefresh(c TestCase, t testing.T, wd *plugintest.WorkingDir, step Test
 			return err
 		}
 		return nil
-	}, wd, c.ProviderFactories)
+	}, wd, providerFactories{
+		legacy:  c.ProviderFactories,
+		protov5: c.ProtoV5ProviderFactories,
+		protov6: c.ProtoV6ProviderFactories})
 	if err != nil {
 		return err
 	}

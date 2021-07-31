@@ -3,8 +3,7 @@
 * Requires (recent versions, but approximate):
   * terraform 0.13.X+
   * go 1.15.X+ (compiling)
-  * docker 19.X+ (build & test scripts)
-  * docker-compose 1.24.X+ (build & test scripts)
+  * docker 20.10.X+ (build & test scripts)
 
 ## Todo Server
 
@@ -75,4 +74,4 @@ terraform {
 ## TODOs
 
 * https setup
-* Setup docker-compose to use pre-built binary
+* Setup docker compose to use pre-built binary

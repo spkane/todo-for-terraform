@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"runtime"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/go-plugin"
@@ -15,10 +17,11 @@ import (
 // ReattachConfig holds the information Terraform needs to be able to attach
 // itself to a provider process, so it can drive the process.
 type ReattachConfig struct {
-	Protocol string
-	Pid      int
-	Test     bool
-	Addr     ReattachConfigAddr
+	Protocol        string
+	ProtocolVersion int
+	Pid             int
+	Test            bool
+	Addr            ReattachConfigAddr
 }
 
 // ReattachConfigAddr is a JSON-encoding friendly version of net.Addr.
@@ -54,9 +57,10 @@ func DebugServe(ctx context.Context, opts *ServeOpts) (ReattachConfig, <-chan st
 	}
 
 	return ReattachConfig{
-		Protocol: string(config.Protocol),
-		Pid:      config.Pid,
-		Test:     config.Test,
+		Protocol:        string(config.Protocol),
+		ProtocolVersion: config.ProtocolVersion,
+		Pid:             config.Pid,
+		Test:            config.Test,
 		Addr: ReattachConfigAddr{
 			Network: config.Addr.Network(),
 			String:  config.Addr.String(),
@@ -87,14 +91,26 @@ func Debug(ctx context.Context, providerAddr string, opts *ServeOpts) error {
 		case <-ctx.Done():
 		}
 	}()
-	reattachStr, err := json.Marshal(map[string]ReattachConfig{
+	reattachBytes, err := json.Marshal(map[string]ReattachConfig{
 		providerAddr: config,
 	})
 	if err != nil {
 		return fmt.Errorf("Error building reattach string: %w", err)
 	}
 
-	fmt.Printf("Provider server started; to attach Terraform, set TF_REATTACH_PROVIDERS to the following:\n%s\n", string(reattachStr))
+	reattachStr := string(reattachBytes)
+
+	fmt.Printf("Provider started, to attach Terraform set the TF_REATTACH_PROVIDERS env var:\n\n")
+	switch runtime.GOOS {
+	case "windows":
+		fmt.Printf("\tCommand Prompt:\tset \"TF_REATTACH_PROVIDERS=%s\"\n", reattachStr)
+		fmt.Printf("\tPowerShell:\t$env:TF_REATTACH_PROVIDERS='%s'\n", strings.ReplaceAll(reattachStr, `'`, `''`))
+	case "linux", "darwin":
+		fmt.Printf("\tTF_REATTACH_PROVIDERS='%s'\n", strings.ReplaceAll(reattachStr, `'`, `'"'"'`))
+	default:
+		fmt.Println(reattachStr)
+	}
+	fmt.Println("")
 
 	// wait for the server to be done
 	<-closeCh
