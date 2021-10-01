@@ -5,7 +5,7 @@ set -eu
 export TF="terraform"
 export OS="darwin"
 export ARCH="amd64"
-export VERSION="1.1.0"
+export VERSION="1.2.0"
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
