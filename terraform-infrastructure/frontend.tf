@@ -1,11 +1,6 @@
 resource "aws_s3_bucket" "lb_logs" {
   bucket = "todo-lb-logs"
-  acl    = "private"
   force_destroy = true
-
-  versioning {
-    enabled = false
-  }
 
   lifecycle {
     prevent_destroy = false
@@ -16,6 +11,18 @@ resource "aws_s3_bucket" "lb_logs" {
     environment   = "todo"
     Trainer       = "Sean P. Kane"
   }
+}
+
+resource "aws_s3_bucket_versioning" "lb_logs" {
+  bucket = aws_s3_bucket.lb_logs.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  bucket = aws_s3_bucket.lb_logs.id
+  acl    = "private"
 }
 
 resource "aws_s3_bucket_policy" "lb_logs" {
