@@ -58,7 +58,7 @@ func resourceTodoCreate(d *schema.ResourceData, m interface{}) error {
 	return resourceTodoRead(d, m)
 }
 
-//resourceTodoRead reads a single todo resource and updates the state
+// resourceTodoRead reads a single todo resource and updates the state
 func resourceTodoRead(d *schema.ResourceData, m interface{}) error {
 	c := m.(*client.TodoList)
 
@@ -95,7 +95,7 @@ func resourceTodoRead(d *schema.ResourceData, m interface{}) error {
 	return nil
 }
 
-//resourceTodoUpdate modifies a single todo resource and updates the state
+// resourceTodoUpdate modifies a single todo resource and updates the state
 func resourceTodoUpdate(d *schema.ResourceData, m interface{}) error {
 	// Enable partial state mode
 	// We don't really need this since we can update

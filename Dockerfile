@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine AS build
+FROM golang:1.19-alpine AS build
 
 RUN apk --no-cache add \
     bash \
@@ -10,7 +10,7 @@ WORKDIR /go/src/github.com/spkane/todo-for-terraform
 # This copies in more than we need, but since we are
 # creating a second image it is not really a big deal.
 ADD . /go/src/github.com/spkane/todo-for-terraform
-RUN go build -mod=vendor --ldflags '-linkmode external -extldflags "-static"' ./cmd/todo-list-server
+RUN go build --ldflags '-linkmode external -extldflags "-static"' ./cmd/todo-list-server
 
 FROM alpine:3.14 AS deploy
 

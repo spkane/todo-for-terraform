@@ -11,10 +11,10 @@ bin: fmtcheck
 # dev creates binaries for testing Terraform locally. These are put
 # into ./bin/ as well as $GOPATH/bin
 dev: fmtcheck
-	go install -mod=vendor .
+	go install .
 
 quickdev:
-	go install -mod=vendor .
+	go install .
 
 # Shorthand for building and installing just one plugin for local testing.
 # Run as (for example): make plugin-dev PLUGIN=provider-aws
@@ -26,7 +26,7 @@ quickdev:
 # we run this one package at a time here because running the entire suite in
 # one command creates memory usage issues when running in Travis-CI.
 test: fmtcheck
-	go list -mod=vendor $(TEST) | xargs -t -n4 go test $(TESTARGS) -mod=vendor -timeout=2m -parallel=4
+	go list $(TEST) | xargs -t -n4 go test $(TESTARGS) -timeout=2m -parallel=4
 
 # testacc runs acceptance tests
 testacc: fmtcheck
@@ -44,7 +44,7 @@ testacc: fmtcheck
 	@curl -i http://127.0.0.1:8080/ -X POST -H 'Content-Type: application/spkane.todo-list.v1+json' -d '{"description":"datasource test","completed":false}' > /dev/null 2>&1
 	@curl http://127.0.0.1:8080/
 	@echo "==> Starting tests"
-	TODO_HOST=127.0.0.1 TODO_PORT=8080 TF_ACC=1 go test $(TEST) -v $(TESTARGS) -mod=vendor -timeout 120m
+	TODO_HOST=127.0.0.1 TODO_PORT=8080 TF_ACC=1 go test $(TEST) -v $(TESTARGS) -timeout 120m
 	@echo "==> Tearing down environment"
 	docker compose down
 
@@ -52,7 +52,7 @@ testacc: fmtcheck
 # The TF_ACC here allows network access, but does not require any special
 # credentials since the e2etests use local-only providers such as "null".
 e2etest:
-	TF_ACC=1 go test -mod=vendor -v ./command/e2etest
+	TF_ACC=1 go test -v ./command/e2etest
 
 test-compile: fmtcheck
 	@if [ "$(TEST)" = "./..." ]; then \
@@ -60,11 +60,11 @@ test-compile: fmtcheck
 		echo "  make test-compile TEST=./builtin/providers/test"; \
 		exit 1; \
 	fi
-	go test -mod=vendor -c $(TEST) $(TESTARGS)
+	go test -c $(TEST) $(TESTARGS)
 
 # testrace runs the race checker
 testrace: fmtcheck
-	TF_ACC= go test -mod=vendor -race $(TEST) $(TESTARGS)
+	TF_ACC= go test -race $(TEST) $(TESTARGS)
 
 cover:
 	go test $(TEST) -coverprofile=coverage.out
