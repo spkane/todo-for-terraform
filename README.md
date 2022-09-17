@@ -48,18 +48,14 @@ The build script runs the Integration tests. If you want to run real local terra
 
 ### Install
 
-In general the provider must be copied into the following directory so that terraform can find it:
+In your terraform HCL you will need to reference the provider with something like this:
 
-`$HOME/.terraform.d/plugins/terraform.spkane.org/spkane/todo/${VERSION}/${OS}_${ARCH}/`
-
-and in your terraform hcl you will need to refernce the prociver with something like this:
-
-```
+```hcl
 terraform {
   required_providers {
     todo = {
-      source  = "terraform.spkane.org/spkane/todo"
-      version = "1.2.0"
+      source  = "spkane/todo"
+      version = "1.2.1"
     }
   }
 }
