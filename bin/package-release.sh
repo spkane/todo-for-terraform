@@ -20,14 +20,4 @@ for i in $(ls -C1 .); do
   cd ..
 done
 
-cd "$DIR/../terraform-provider-todo/pkg/"
-
-rm -f *.tar.gz
-
-for i in $(ls -C1 .); do
-  cd ${i}
-  tar -cvzf ../terraform-provider-todo-${i}.tar.gz *
-  cd ..
-done
-
 exit 0
