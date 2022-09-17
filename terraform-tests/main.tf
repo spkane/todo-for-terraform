@@ -2,7 +2,7 @@ terraform {
   required_providers {
     todo = {
       source  = "spkane/todo"
-      version = "1.2.1"
+      version = "1.2.2"
     }
   }
 }
