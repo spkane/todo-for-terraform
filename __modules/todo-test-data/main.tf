@@ -2,18 +2,18 @@ terraform {
   required_providers {
     todo = {
       source  = "spkane/todo"
-      version = "1.2.3"
+      version = "2.0.1"
     }
   }
 }
 
-resource "todo" "first_series" {
+resource "todo_todo" "first_series" {
   count = var.number
   description = "${var.team_name}-${count.index} ${var.purpose} todo"
   completed = false
 }
 
-resource "todo" "second_series" {
+resource "todo_todo" "second_series" {
   count = var.number
   description = "[${count.index + var.number}] ${var.descriptions[count.index]}"
   completed = true
