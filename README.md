@@ -32,9 +32,7 @@ curl -i http://127.0.0.1:8080/3 -X DELETE -H 'Content-Type: application/spkane.t
 curl -i http://127.0.0.1:8080
 ```
 
-## Terraform Provider
-
-### Build & Test
+## Build & Test
 
 ```shell
 ./bin/build.sh
@@ -46,7 +44,11 @@ The build script runs the Integration tests. If you want to run real local terra
 ./bin/tests_manual.sh
 ```
 
-### Install
+## Terraform Provider
+
+The source code for the Terraform provider can be found here:
+
+- [spkane/terraform-provider-todo](https://github.com/spkane/terraform-provider-todo)
 
 In your terraform HCL you will need to reference the provider with something like this:
 
@@ -66,8 +68,8 @@ terraform {
 * *NOTE*: The todo server code for this project was directly forked from:
   * [github.com/go-swagger](https://github.com/go-swagger/go-swagger/tree/master/examples/tutorials/todo-list/server-complete)
 
-
 ## TODOs
 
 * https setup
 * Setup docker compose to use pre-built binary
+
