@@ -20,7 +20,15 @@ resource "aws_s3_bucket_versioning" "lb_logs" {
   }
 }
 
-resource "aws_s3_bucket_acl" "example" {
+resource "aws_s3_bucket_ownership_controls" "lb_logs" {
+  bucket = aws_s3_bucket.lb_logs.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "lb_logs" {
+  depends_on = [aws_s3_bucket_ownership_controls.lb_logs]
   bucket = aws_s3_bucket.lb_logs.id
   acl    = "private"
 }
