@@ -1,6 +1,6 @@
 resource "aws_instance" "todo" {
   count         = "1"
-  ami           = "ami-5c66ea23"
+  ami           = "ami-03a4363a7d864a093"
   instance_type = "m5.large"
   key_name      = aws_key_pair.deployer.key_name
   subnet_id     = data.terraform_remote_state.training_account.outputs.public_subnets[0]
@@ -26,12 +26,14 @@ resource "aws_instance" "todo" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual",
-      "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
-      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
-      "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
+      "sudo apt-get install -y ca-certificates curl gnupg",
+      "sudo install -m 0755 -d /etc/apt/keyrings",
+      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
+      "sudo chmod a+r /etc/apt/keyrings/docker.gpg",
+      # The following line will need updating with arch or major ubuntu updates
+      "echo 'deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu   jammy stable' | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
       "sudo apt-get update",
-      "sudo apt-get install -y docker-ce",
+      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
       "sudo usermod -aG docker ubuntu",
       "wget https://storage.googleapis.com/gvisor/releases/nightly/latest/runsc",
       "chmod +x runsc",

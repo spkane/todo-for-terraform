@@ -113,8 +113,8 @@ resource "aws_lb_target_group_attachment" "todo_instance" {
 
 resource "ns1_record" "todo-api" {
   ttl    = 60
-  zone   = "spkane.org"
-  domain = "todo-api.spkane.org"
+  zone   = "techlabs.sh"
+  domain = "todo-api.techlabs.sh"
   type   = "CNAME"
 
   meta = {

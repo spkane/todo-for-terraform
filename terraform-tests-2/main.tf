@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "todo" {
-  host = "todo-api.spkane.org"
+  host = "todo-api.techlabs.sh"
   port = "8080"
   apipath = "/"
   schema = "http"
