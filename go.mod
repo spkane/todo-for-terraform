@@ -16,5 +16,5 @@ require (
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	go.mongodb.org/mongo-driver v1.10.2 // indirect
-	golang.org/x/net v0.7.0
+	golang.org/x/net v0.17.0
 )
