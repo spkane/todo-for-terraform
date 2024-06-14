@@ -3,7 +3,7 @@ services:
     container_name: todo
     build:
       context: .
-    image: todo-local
+    image: spkane/todo-list-server:latest
     restart: unless-stopped
     networks:
       - my-net
