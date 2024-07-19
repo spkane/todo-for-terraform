@@ -6,7 +6,12 @@ variable "number" {
 
 variable "purpose" {
   type        = string
-  description = "The purpose of these todos (dev, test, prod, etc.)"
+  description = "The purpose of these todos (development, testing, integration, or production)"
+
+  validation {
+    condition = contains(["development", "testing", "integration", "production"], var.purpose)
+    error_message = "pupose must be set to one of the following values: development, testing, integration, or production"
+  }
 }
 
 variable "team_name" {
