@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "lb_logs" {
   }
 
     tags = {
-    pupose        = "lb-logs"
+    purpose        = "lb-logs"
     environment   = "todo"
     Trainer       = "Sean P. Kane"
   }

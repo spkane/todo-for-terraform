@@ -10,7 +10,7 @@ variable "purpose" {
 
   validation {
     condition = contains(["development", "testing", "integration", "production"], var.purpose)
-    error_message = "pupose must be set to one of the following values: development, testing, integration, or production"
+    error_message = "purpose must be set to one of the following values: development, testing, integration, or production"
   }
 }
 
