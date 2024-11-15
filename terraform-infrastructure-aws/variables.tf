@@ -19,4 +19,5 @@ variable "ssh_public_key_path" {
 variable "personal_ns1_apikey" {
     type = string
     description = "Personal NS1 API key"
+    sensitive = true
 }
