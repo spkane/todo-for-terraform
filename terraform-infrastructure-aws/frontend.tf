@@ -76,7 +76,7 @@ resource "aws_lb" "todo" {
 
 resource "aws_lb_listener" "todo" {
   load_balancer_arn = aws_lb.todo.arn
-  port              = "8080"
+  port              = 8080
   protocol          = "HTTP"
 
   default_action {
@@ -87,7 +87,7 @@ resource "aws_lb_listener" "todo" {
 
 resource "aws_lb_target_group" "todo" {
   name     = "todo-target"
-  port     = "8080"
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = data.terraform_remote_state.training_account.outputs.vpc_id
 
