@@ -9,6 +9,9 @@ terraform {
       version = "~> 5.0"
     }
   }
+  backend "local" {
+    path = "./terraform.tfstate"
+  }
 }
 
 provider "todo" {

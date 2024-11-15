@@ -6,6 +6,9 @@ terraform {
       version = "~> 0.42.0"
     }
   }
+  backend "local" {
+    path = "./terraform.tfstate"
+  }
 }
 
 provider "tfe" {
