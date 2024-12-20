@@ -21,6 +21,11 @@ data "todo_todo" "foreign" {
   id = 1
 }
 
+resource "todo_todo" "solo" {
+  description = "An important todo"
+  completed = false
+}
+
 resource "todo_todo" "test1" {
   count = 5
   description = "${count.index}-1 ${var.purpose} todo"
